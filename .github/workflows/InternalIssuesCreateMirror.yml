@@ -30,9 +30,9 @@ jobs:
       - name: Set label environment variable
         run: |
           if [ ${{ github.event.label.name == 'reproduced' }} ]; then
-            echo 'LABEL=needs label"' >> $GITHUB_ENV
+            echo 'LABEL="needs label"' >> $GITHUB_ENV
           else
-            echo 'LABEL=needs triage"' >> $GITHUB_ENV
+            echo 'LABEL="needs triage"' >> $GITHUB_ENV
           fi
 
       - name: Create or label issue
