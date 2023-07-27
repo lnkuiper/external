@@ -6,7 +6,7 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.MY_TOKEN }}
-  TITLE_PREFIX: "[duckdb/#${{ github.event.issue.number }}]"
+  TITLE_PREFIX: "[external/#${{ github.event.issue.number }}]"
 
 jobs:
   create_or_label_issue:
@@ -25,7 +25,9 @@ jobs:
 
       - name: Get mirror issue number
         run: |
-          echo "Issues with same prefix:\n$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX"))')"
+          echo "gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX"))'"
+          echo "Issues with prefix '$TITLE_PREFIX':"
+          echo "$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX"))')"
           echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
 
       - name: Print whether mirror issue exists
