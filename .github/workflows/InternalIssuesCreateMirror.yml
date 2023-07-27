@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/external --json title,number --jq '.[]|select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
 
-      - name: Print whether mirror issue exists:
+      - name: Print whether mirror issue exists
         run: |
           if [ "$MIRROR_ISSUE_NUMBER" = "" ]; then
             echo "Mirror issue does not exist yet"
