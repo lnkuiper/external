@@ -45,11 +45,14 @@ jobs:
             echo "LABEL=needs triage" >> $GITHUB_ENV
             echo "UNLABEL=needs label" >> $GITHUB_ENV
           fi
+          cat $GITHUB_ENV
 
       - name: Create or label issue
         run: |
           if [ "$MIRROR_ISSUE_NUMBER" == "" ]; then
+            echo "branch 1"
             gh issue create --repo lnkuiper/internal --label "$LABEL" --title "$TITLE_PREFIX - ${{ github.event.issue.title }}" --body "See https://github.com/lnkuiper/external/issues/${{ github.event.issue.number }}"
           else
+            echo "branch 2"
             gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --remove-label "$UNLABEL" --add-label "$LABEL"
           fi

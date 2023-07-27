@@ -45,6 +45,6 @@ jobs:
           if [ "$MIRROR_ISSUE_NUMBER" != "" ]; then
             if [ "$(gh issue view --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --json closed --jq '.closed')" = "true" ]; then
               gh issue reopen --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER
-            fi && \
+            fi
             gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --add-label "reopened" --remove-label "closed"
           fi
