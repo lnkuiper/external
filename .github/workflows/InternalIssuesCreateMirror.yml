@@ -29,7 +29,7 @@ jobs:
 
       - name: Print whether mirror issue exists
         run: |
-          if [ "$MIRROR_ISSUE_NUMBER" = "" ]; then
+          if [ "$MIRROR_ISSUE_NUMBER" == "" ]; then
             echo "Mirror issue does not exist yet"
           else
             echo "Mirror issue exists with number $MIRROR_ISSUE_NUMBER"
@@ -37,7 +37,7 @@ jobs:
 
       - name: Set label environment variable
         run: |
-          if [ ${{ github.event.label.name = 'reproduced' }} ]; then
+          if [ ${{ github.event.label.name == 'reproduced' }} ]; then
             echo 'LABEL="needs label"' >> $GITHUB_ENV
           else
             echo 'LABEL="needs triage"' >> $GITHUB_ENV
@@ -45,7 +45,7 @@ jobs:
 
       - name: Create or label issue
         run: |
-          if [ "$MIRROR_ISSUE_NUMBER" = "" ]; then
+          if [ "$MIRROR_ISSUE_NUMBER" == "" ]; then
             gh issue create --repo lnkuiper/internal --label "$LABEL" --title "$TITLE_PREFIX ${{ github.event.issue.title }}" --body "See https://github.com/lnkuiper/external/issues/${{ github.event.issue.number }}"
           else
             gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --remove-label "needs label" --remove-label "needs triage" --add-label "$LABEL"
