@@ -19,17 +19,23 @@ jobs:
 
       - name: Add comment with status to mirror issue
         run: |
-          gh issue comment --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --body "The issue has been ${{ github.event.action }}."
+          if [ "$MIRROR_ISSUE_NUMBER" != "" ]; then
+            gh issue comment --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --body "The issue has been ${{ github.event.action }}."
+          fi
 
       - name: Add closed label to mirror issue
         if: github.event.action == 'closed'
         run: |
-          gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --add-label "closed" --remove-label "reopened"
+          if [ "$MIRROR_ISSUE_NUMBER" != "" ]; then
+            gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --add-label "closed" --remove-label "reopened"
+          fi
 
       - name: Reopen mirror issue and add reopened label
         if: github.event.action == 'reopened'
         run: |
-          if [ "$(gh issue view --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --json closed --jq '.closed')" = "true" ]; then
-            gh issue reopen --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER
-          fi && \
-          gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --add-label "reopened" --remove-label "closed"
+          if [ "$MIRROR_ISSUE_NUMBER" != "" ]; then
+            if [ "$(gh issue view --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --json closed --jq '.closed')" = "true" ]; then
+              gh issue reopen --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER
+            fi && \
+            gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --add-label "reopened" --remove-label "closed"
+          fi
