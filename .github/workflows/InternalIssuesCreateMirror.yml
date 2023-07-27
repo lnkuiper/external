@@ -6,7 +6,7 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
-  TITLE_PREFIX: [duckdb/#${{ github.event.issue.number }}]
+  TITLE_PREFIX: "[duckdb/#${{ github.event.issue.number }}]"
 
 jobs:
   create_or_label_issue:
