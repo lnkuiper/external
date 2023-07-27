@@ -25,10 +25,10 @@ jobs:
 
       - name: Get mirror issue number
         run: |
-          echo "gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith(\"$TITLE_PREFIX\"))'"
+          echo "gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX"))'"
           echo "Issues with prefix '$TITLE_PREFIX':"
-          echo "$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith(\"$TITLE_PREFIX\"))')"
-          echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith(\"$TITLE_PREFIX\")).number')" >> $GITHUB_ENV
+          echo "$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX"))')"
+          echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
 
       - name: Print whether mirror issue exists
         run: |
@@ -49,7 +49,7 @@ jobs:
       - name: Create or label issue
         run: |
           if [ "$MIRROR_ISSUE_NUMBER" == "" ]; then
-            gh issue create --repo lnkuiper/internal --label "$LABEL" --title "$TITLE_PREFIX ${{ github.event.issue.title }}" --body "See https://github.com/lnkuiper/external/issues/${{ github.event.issue.number }}"
+            gh issue create --repo lnkuiper/internal --label "$LABEL" --title "$TITLE_PREFIX - ${{ github.event.issue.title }}" --body "See https://github.com/lnkuiper/external/issues/${{ github.event.issue.number }}"
           else
             gh issue edit --repo lnkuiper/internal $MIRROR_ISSUE_NUMBER --remove-label "needs label" --remove-label "needs triage" --add-label "$LABEL"
           fi
