@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Get mirror issue number
         run: |
-          echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[]|select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
+          echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
 
       - name: Print whether mirror issue exists
         run: |
