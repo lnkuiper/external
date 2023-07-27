@@ -13,19 +13,18 @@ jobs:
     if: github.event.label.name == 'reproduced' || github.event.label.name == 'under review'
     runs-on: ubuntu-latest
     steps:
-      - name: Remove under review if reproduced
+      env:
+        MIRROR_ISSUE_NUMBER: $(gh issue list --repo lnkuiper/internal --json title,number --jq '.[]|select(.title | startswith("$TITLE_PREFIX")).number')"
+
+      - name: Remove needs triage / under review if reproduced
         if: github.event.label.name == 'reproduced'
         run: |
-          gh issue edit --repo lnkuiper/external ${{ github.event.issue.number }} --remove-label "under review"
+          gh issue edit --repo lnkuiper/external ${{ github.event.issue.number }} --remove-label "needs triage" --remove-label "under review"
 
-      - name: Remove reproduced if under review
+      - name: Remove needs triage / reproduced if under review
         if: github.event.label.name == 'under review'
         run: |
-          gh issue edit --repo lnkuiper/external ${{ github.event.issue.number }} --remove-label "reproduced"
-
-      - name: Get mirror issue number
-        run: |
-          echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[]|select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
+          gh issue edit --repo lnkuiper/external ${{ github.event.issue.number }} --remove-label "needs triage" --remove-label "reproduced"
 
       - name: Print whether mirror issue exists
         run: |
