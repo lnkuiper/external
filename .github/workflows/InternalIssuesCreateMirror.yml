@@ -25,6 +25,7 @@ jobs:
 
       - name: Get mirror issue number
         run: |
+          echo "Issues with same prefix:\n$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX"))')"
           echo "MIRROR_ISSUE_NUMBER=$(gh issue list --repo lnkuiper/internal --json title,number --jq '.[] | select(.title | startswith("$TITLE_PREFIX")).number')" >> $GITHUB_ENV
 
       - name: Print whether mirror issue exists
